@@ -11,7 +11,7 @@ defineProps({
   <div class="product-card">
     <div class="product-image-container">
       <img 
-        :src="product.image || 'https://via.placeholder.com/300x200?text=No+Image'" 
+        :src="product.imageUrl || 'https://via.placeholder.com/300x200?text=No+Image'" 
         :alt="product.title"
         class="product-image"
       >

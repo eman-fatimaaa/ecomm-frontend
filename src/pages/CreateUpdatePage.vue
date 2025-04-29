@@ -5,40 +5,40 @@ import { useRouter } from 'vue-router'
 const title = ref('')
 const description = ref('')
 const price = ref('')
-const imageUrl = ref('')
+const image = ref('')
 const category = ref('')
 const isLoading = ref(false)
 const router = useRouter()
 
 async function handleCreate() {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('authToken')
   if (!token) {
     alert('You must be logged in')
-    router.push('/auth')
+    router.push('/')
     return
   }
 
   isLoading.value = true
   
   try {
-    const res = await fetch('https://your-backend.onrender.com/products', {
+    const res = await fetch('https://ecommerce-rest-api-miv1.onrender.com/api/products/createProduct', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ 
-        title: title.value, 
+        name: title.value, 
         description: description.value, 
         price: parseFloat(price.value),
-        imageUrl: imageUrl.value,
+        imageUrl: image.value,
         category: category.value
       })
     })
 
     if (res.ok) {
       alert('Product created successfully!')
-      router.push('/')
+      router.push('/home')
     } else {
       const error = await res.json()
       throw new Error(error.message || 'Failed to create product')
@@ -114,15 +114,15 @@ async function handleCreate() {
         </div>
 
         <div class="form-group">
-          <label for="imageUrl">Image URL (optional)</label>
+          <label for="image">Image Url</label>
           <input
-            id="imageUrl"
-            v-model="imageUrl"
+            id="image"
+            v-model="image"
+            required
             type="url"
-            placeholder="https://example.com/image.jpg"
+            placeholder="206"
             class="form-input"
           >
-          <small class="input-hint">We'll use a placeholder if no image is provided</small>
         </div>
 
         <button type="submit" class="submit-button" :disabled="isLoading">

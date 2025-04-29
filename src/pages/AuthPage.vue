@@ -11,6 +11,7 @@ const formFields = ref([
   { id: 'password', label: 'Password', type: 'password', value: '', required: true, visible: true },
   { id: 'firstName', label: 'First Name', type: 'text', value: '', required: true, visible: false },
   { id: 'lastName', label: 'Last Name', type: 'text', value: '', required: true, visible: false },
+  { id: 'inventary', label: 'Inventary', type: 'text', value: '', required: true, visible: false},
   { id: 'role', label: 'Role', type: 'select', value: 'user', options: ['user', 'admin'], required: true, visible: false }
 ])
 
@@ -59,8 +60,8 @@ async function handleSubmit() {
 
   // Prepare the API endpoint and payload
   const endpoint = isLoginMode.value 
-    ? 'https://ecommerce-rest-api-miv1.onrender.com/login'  // Login endpoint
-    : 'https://ecommerce-rest-api-miv1.onrender.com/signup' // Signup endpoint
+    ? 'https://ecommerce-rest-api-miv1.onrender.com/api/users/login'  // Login endpoint
+    : 'https://ecommerce-rest-api-miv1.onrender.com/api/users/signup' // Signup endpoint
 
   const payload = {
     email: formFields.value.find(f => f.id === 'email').value,
@@ -70,6 +71,7 @@ async function handleSubmit() {
   if (!isLoginMode.value) {
     payload.firstName = formFields.value.find(f => f.id === 'firstName').value
     payload.lastName = formFields.value.find(f => f.id === 'lastName').value
+    payload.inventary = formFields.value.find(f => f.id === 'inventary').value
     payload.role = formFields.value.find(f => f.id === 'role').value
   }
 
@@ -92,7 +94,7 @@ async function handleSubmit() {
     if (isLoginMode.value) {
       // Save token and redirect for login
       localStorage.setItem('authToken', data.token)
-      router.push('/dashboard') // Redirect to dashboard or home
+      router.push('/home') // Redirect to dashboard or home
     } else {
       // Handle successful registration
       alert('Registration successful! Please login.')
